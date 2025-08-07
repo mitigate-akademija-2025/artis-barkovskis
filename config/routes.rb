@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :questions
+  resources :quizzes
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -13,10 +15,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "dashboard#show"
-  root controller: "dashboard", action: :show
-
-  get 'quizzes', to: 'quizzes#index'
-  get "quizzes/:id", to: "quizzes#show"
+  root to: redirect('/quizzes')
 
   #resources :quizzes, do
   #  resources :questions, shallow: true
