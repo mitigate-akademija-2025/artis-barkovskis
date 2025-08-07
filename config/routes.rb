@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   # root "dashboard#show"
   root to: redirect('/quizzes')
 
-  #resources :quizzes, do
-  #  resources :questions, shallow: true
-  #end
+  resources :quizzes, shallow: true do
+    resources :questions, only: [:new, :create, :edit, :update, :destroy]
+  end
 end

@@ -1,12 +1,11 @@
 <div id="<%= dom_id quiz %>">
   <p>
-    <strong>Title:</strong>
-    <%= quiz.title %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
     <%= quiz.description %>
   </p>
+
+  <% if quiz.questions.any? %>
+    <ol>
+      <% quiz.questions.each do |questions| %>
+        
 
 </div>
