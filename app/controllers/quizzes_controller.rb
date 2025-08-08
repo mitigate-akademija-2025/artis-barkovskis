@@ -1,9 +1,14 @@
 class QuizzesController < ApplicationController
   before_action :set_quiz, only: %i[ show edit update destroy ]
+  before_action :authorize_resource, only: [:index]
 
   # GET /quizzes or /quizzes.json
   def index
     @quizzes = Quiz.all
+  end
+
+  def authorize_resource
+    authorize Quiz
   end
 
   # GET /quizzes/1 or /quizzes/1.json
