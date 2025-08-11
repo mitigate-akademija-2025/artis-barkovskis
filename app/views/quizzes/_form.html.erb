@@ -11,6 +11,11 @@
   <% end %>
 
   <div>
+    <%= f.label :public, "Make this quiz public?" %>
+    <%= f.check_box :public %>
+  </div>
+
+  <div>
     <%= f.label :title, style: "display: block" %>
     <%= f.text_field :title %>
   </div>

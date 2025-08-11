@@ -4,7 +4,21 @@ class QuizzesController < ApplicationController
 
   # GET /quizzes or /quizzes.json
   def index
-    @quizzes = Quiz.all
+    if current_user.admin?
+      @quizzes = Quiz.all
+    else
+      @quizzes = current_user.quizzes
+    end
+    authorize @quizzes
+  end
+
+  def all_quizzes
+    if params[:query].present?
+          @quizzes = Quiz.where(public: true)
+                   .where("title LIKE ?", "%#{params[:query]}%")
+    else
+      @quizzes = Quiz.where(public: true)
+    end
   end
 
   def authorize_resource
@@ -22,11 +36,13 @@ class QuizzesController < ApplicationController
 
   # GET /quizzes/1/edit
   def edit
+    @quiz = Quiz.find(params[:id])
+    authorize @quiz
   end
 
   # POST /quizzes or /quizzes.json
   def create
-    @quiz = Quiz.new(quiz_params)
+    @quiz = current_user.quizzes.build(quiz_params)
 
     respond_to do |format|
       if @quiz.save
@@ -41,6 +57,9 @@ class QuizzesController < ApplicationController
 
   # PATCH/PUT /quizzes/1 or /quizzes/1.json
   def update
+    @quiz = Quiz.find(params[:id])
+    authorize @quiz
+
     respond_to do |format|
       if @quiz.update(quiz_params)
         format.html { redirect_to @quiz, notice: "Question was successfully updated." }
@@ -54,6 +73,9 @@ class QuizzesController < ApplicationController
 
   # DELETE /quizzes/1 or /quizzes/1.json
   def destroy
+    @quiz = Quiz.find(params[:id])
+    authorize @quiz
+
     @quiz.destroy!
 
     respond_to do |format|
@@ -71,11 +93,13 @@ class QuizzesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def quiz_params
       params.require(:quiz).permit(
+        :public,
         :title,
         :description,
         questions_attributes: [
           :id, 
           :name, 
+          :points,
           :_destroy,
           options_attributes: [:id, :name, :is_correct, :_destroy]
         ]
