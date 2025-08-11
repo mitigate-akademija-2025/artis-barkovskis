@@ -21,21 +21,31 @@
     <%= form.textarea :description %>
   </div>
 
-  <%= form.fields_for :questions do |question_form| %>
-    <% puts question_form.inspect %>
-    <fieldset>
-      <legend>Question #<%=question_form.index + 1%></legend>
-      <div class="nested-fields">
-        <%= question_form.label :name %>
-        <%= question_form.text_field :name %>
+<%= form.fields_for :questions do |question_form| %>
+  <fieldset>
+    <legend>Question #<%= question_form.index + 1 %></legend>
+    <div class="nested-fields">
+      <%= question_form.label :name %>
+      <%= question_form.text_field :name %>
 
-        <%if question_form.object.persisted? %>
-          <%= question_form.check_box :_destroy %>
-          <%= question_form.label :_destroy, "Remove" %>
+      <div>
+        <strong>Options:</strong>
+        <%= question_form.fields_for :options do |option_form| %>
+          <div class="option-fields">
+            <%= option_form.label :name, "Option" %>
+            <%= option_form.text_field :name %>
+            <%= option_form.check_box :is_correct %>
+            <%= option_form.label :is_correct %>
+            <% if option_form.object.persisted? %>
+              <%= option_form.check_box :_destroy %>
+              <%= option_form.label :_destroy, "Remove" %>
+            <% end %>
+          </div>
         <% end %>
       </div>
-    </fieldset>
-  <% end %>
+    </div>
+  </fieldset>
+<% end %>
     
   <div>
     <%= form.submit %>

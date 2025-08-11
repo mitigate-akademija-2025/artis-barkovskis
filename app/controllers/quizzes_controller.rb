@@ -19,7 +19,8 @@ class QuizzesController < ApplicationController
   def new
     @quiz = Quiz.new
     2.times do
-      @quiz.questions.build(name: "Jautājums")
+      q = @quiz.questions.build(name: "Jautājums")
+      2. times { q.options.build }
     end
   end
 
@@ -76,7 +77,12 @@ class QuizzesController < ApplicationController
       params.require(:quiz).permit(
         :title,
         :description,
-        questions_attributes: [:id, :name, :_destroy]
+        questions_attributes: [
+          :id, 
+          :name, 
+          :_destroy,
+          options_attributes: [:id, :name, :is_correct, :_destroy]
+        ]
       )
     end
 end
