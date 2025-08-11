@@ -1,0 +1,12 @@
+<div class="nested-form-wrapper option-wrapper">
+  <div class="flex items-center space-x-2">
+    <%= f.text_field :name %>
+    <button type="button" data-action="nested-form#remove" aria-label="Remove option" class="ml-2 text-red-600 hover:text-red-800 font-bold">
+      &times;
+    </button>
+  </div>
+
+  <%= f.check_box :is_correct %>
+  <%= f.label :is_correct, "Correct" %>
+
+</div>

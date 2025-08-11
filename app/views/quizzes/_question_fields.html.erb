@@ -1,0 +1,27 @@
+<fieldset class="nested-form-wrapper question-wrapper">
+  <legend>Question</legend>
+  <div class="flex items-center space-x-2">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+    <button type="button" data-action="nested-form#remove" aria-label="Remove question" class="ml-2 text-red-600 hover:text-red-800 font-bold">
+      &times;
+    </button>
+  </div>
+
+  <legend>Answers:</legend>
+
+  <div data-controller="nested-form" data-nested-form-wrapper-selector-value=".option-wrapper">
+    <template data-nested-form-target="template">
+      <%= f.fields_for :options, Option.new, child_index: 'NEW_RECORD' do |option_fields| %>
+        <%= render "option_fields", f: option_fields %>
+      <% end %>
+    </template>
+
+    <%= f.fields_for :options do |option_fields| %>
+      <%= render "option_fields", f: option_fields %>
+    <% end %>
+
+    <div data-nested-form-target="target"></div>
+    <button type="button" data-action="nested-form#add">Add Answer</button>
+  </div>
+</fieldset>
