@@ -1,11 +1,6 @@
-import { Application } from "@hotwired/stimulus"
-import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
-import RailsNestedForm from "@stimulus-components/rails-nested-form"
+import "@hotwired/turbo-rails"
+import "controllers"
 
-const application = Application.start()
-eagerLoadControllersFrom("controllers", application)
-
-application.register("nested-form", RailsNestedForm)
-
-export { application }
-
+import { application } from "./application"
+import NestedFormController from "./nested_form_controller"
+application.register("nested-form", NestedFormController)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_12_122513) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_12_185349) do
   create_table "options", force: :cascade do |t|
     t.string "name"
     t.integer "question_id", null: false
@@ -23,9 +23,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_122513) do
   create_table "questions", force: :cascade do |t|
     t.string "name"
     t.integer "quiz_id", null: false
+    t.integer "points", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "points", default: 1, null: false
     t.index ["quiz_id"], name: "index_questions_on_quiz_id"
   end
 
@@ -54,10 +54,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_122513) do
   create_table "quizzes", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.boolean "public", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_quizzes_on_user_id"
   end
 
@@ -67,10 +67,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_122513) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.boolean "admin", default: false
     t.string "username", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
