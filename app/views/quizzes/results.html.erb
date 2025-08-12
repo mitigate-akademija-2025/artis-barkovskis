@@ -1,0 +1,14 @@
+<table id="quiz_attempts">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Title</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @quiz_attempts.each do |quiz_attempt| %>
+      <%= render "quiz_results", quiz_attempt: quiz_attempt %>
+    <% end %>
+  </tbody>
+</table>

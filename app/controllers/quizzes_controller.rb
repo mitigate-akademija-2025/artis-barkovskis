@@ -14,10 +14,15 @@ class QuizzesController < ApplicationController
 
   def all_quizzes
     if params[:query].present?
-          @quizzes = Quiz.where(public: true)
-                   .where("title LIKE ?", "%#{params[:query]}%")
+      @quizzes = Quiz.where(public: true)
+                     .where("title LIKE ?", "%#{params[:query]}%")
     else
       @quizzes = Quiz.where(public: true)
+    end
+
+    respond_to do |format|
+      format.turbo_stream { render partial: "quizzes/table", locals: { quizzes: @quizzes } }
+      format.html # fallback for normal requests
     end
   end
 
@@ -38,6 +43,17 @@ class QuizzesController < ApplicationController
   def edit
     @quiz = Quiz.find(params[:id])
     authorize @quiz
+  end
+
+
+  def take
+    @quiz = Quiz.find(params[:id])
+  end
+
+  def completed
+    @quiz = Quiz.find(params[:id])
+    @score = params[:score].to_i
+    @max_points = @quiz.questions.sum(:points)
   end
 
   # POST /quizzes or /quizzes.json
@@ -84,6 +100,36 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def take
+    @quiz = Quiz.find(params[:id])
+  end
+  
+  def take_quiz
+    @quiz = Quiz.find(params[:id])
+    answers = params[:answers] || {}
+
+    score = 0
+
+    answers.each do |question_id, option_id|
+      question = Question.find(question_id)
+      selected_option = Option.find(option_id)
+      score += question.points if selected_option.is_correct?
+    end
+
+    QuizAttempt.create!(
+      user: current_user,
+      quiz: @quiz,
+      score: score
+    )
+
+    redirect_to quiz_results_path(@quiz), notice: "You scored #{score} points!"
+  end
+
+  def results
+    @quiz = Quiz.find(params[:id])
+    @quiz_attempts = @quiz.quiz_attempts.all
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_quiz
@@ -102,7 +148,8 @@ class QuizzesController < ApplicationController
           :points,
           :_destroy,
           options_attributes: [:id, :name, :is_correct, :_destroy]
-        ]
+        ],
+        quiz_attempts_attributes: [:id, :user_id, :quiz_id, :score, :completed, :_destroy]
       )
     end
 end
