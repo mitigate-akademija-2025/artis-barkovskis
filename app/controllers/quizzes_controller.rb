@@ -52,8 +52,14 @@ class QuizzesController < ApplicationController
 
   def completed
     @quiz = Quiz.find(params[:id])
-    @score = params[:score].to_i
-    @max_points = @quiz.questions.sum(:points)
+    @quiz_attempt = QuizAttempt.find_by(id: params[:attempt_id]) if params[:attempt_id]
+    if @quiz_attempt
+      @score = @quiz_attempt.score
+      @max_points = @quiz.questions.sum(:points)
+    else
+      @score = params[:score].to_i
+      @max_points = @quiz.questions.sum(:points)
+    end
   end
 
   # POST /quizzes or /quizzes.json
@@ -148,8 +154,7 @@ class QuizzesController < ApplicationController
           :points,
           :_destroy,
           options_attributes: [:id, :name, :is_correct, :_destroy]
-        ],
-        quiz_attempts_attributes: [:id, :user_id, :quiz_id, :score, :completed, :_destroy]
+        ]
       )
     end
 end

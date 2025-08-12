@@ -1,14 +1,21 @@
-<table id="quiz_attempts">
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Title</th>
-      <th>Score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @quiz_attempts.each do |quiz_attempt| %>
-      <%= render "quiz_results", quiz_attempt: quiz_attempt %>
-    <% end %>
-  </tbody>
-</table>
+<% if @quiz_attempts.any? %>
+  <table id="quiz_attempts">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Score</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @quiz_attempts.each do |quiz_attempt| %>
+        <%= render "quiz_results", quiz_attempt: quiz_attempt %>
+        <td>
+          <%= link_to 'View', quiz_completed_path(quiz_attempt.quiz, attempt_id: quiz_attempt.id), class: 'button' %>
+        </td>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No quiz attempts found for this quiz.</p>
+<% end %>

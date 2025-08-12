@@ -12,6 +12,11 @@ class QuizAttemptsController < ApplicationController
 
   def create
     answers = params[:answers] || {}
+    if answers.keys.sort != @quiz.questions.pluck(:id).map(&:to_s).sort
+      flash.now[:alert] = "Please answer all questions."
+      render "quizzes/take", status: :unprocessable_entity, locals: { submitted_answers: answers }
+      return
+    end
     score = 0
 
     answers.each do |question_id, option_id|
@@ -27,7 +32,13 @@ class QuizAttemptsController < ApplicationController
     )
 
     if @quiz_attempt.save
-      redirect_to quiz_completed_path(@quiz, score: score), notice: "Quiz completed! You scored #{score} points."
+      answers.each do |question_id, option_id|
+        @quiz_attempt.quiz_attempt_answers.create!(
+          question_id: question_id,
+          option_id: option_id
+        )
+      end
+      redirect_to quiz_completed_path(@quiz, score: score, attempt_id: @quiz_attempt.id), notice: "Quiz completed! You scored #{score} points."
     else
       flash.now[:alert] = "There was an error saving your attempt."
       render "quizzes/completed", status: :unprocessable_entity

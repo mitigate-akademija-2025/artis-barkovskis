@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_12_074810) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_12_122513) do
   create_table "options", force: :cascade do |t|
     t.string "name"
     t.integer "question_id", null: false
@@ -27,6 +27,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_074810) do
     t.datetime "updated_at", null: false
     t.integer "points", default: 1, null: false
     t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "quiz_attempt_answers", force: :cascade do |t|
+    t.integer "quiz_attempt_id", null: false
+    t.integer "question_id", null: false
+    t.integer "option_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_quiz_attempt_answers_on_option_id"
+    t.index ["question_id"], name: "index_quiz_attempt_answers_on_question_id"
+    t.index ["quiz_attempt_id"], name: "index_quiz_attempt_answers_on_quiz_attempt_id"
   end
 
   create_table "quiz_attempts", force: :cascade do |t|
@@ -67,6 +78,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_12_074810) do
 
   add_foreign_key "options", "questions"
   add_foreign_key "questions", "quizzes"
+  add_foreign_key "quiz_attempt_answers", "options"
+  add_foreign_key "quiz_attempt_answers", "questions"
+  add_foreign_key "quiz_attempt_answers", "quiz_attempts"
   add_foreign_key "quiz_attempts", "quizzes"
   add_foreign_key "quiz_attempts", "users"
   add_foreign_key "quizzes", "users"

@@ -8,7 +8,13 @@
   </thead>
   <tbody>
     <% quizzes.each do |quiz| %>
-      <%= render "quiz_row", quiz: quiz %>
+      <tr>
+        <td><%= quiz.user.username if quiz.respond_to?(:user) && quiz.user %></td>
+        <td><%= link_to quiz.title, quiz_path(quiz), data: { turbo: false } %></td>
+        <td>
+          <%= link_to 'Show', quiz_path(quiz), class: 'button' %>
+        </td>
+      </tr>
     <% end %>
   </tbody>
 </table>
