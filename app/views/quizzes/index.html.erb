@@ -17,7 +17,31 @@
   </tbody>
 </table>
 
-<%= link_to "New quiz", new_quiz_path %>
+<%= link_to "New quiz", "#", id: "new-quiz-btn" %>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("new-quiz-btn");
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    let numQuestions = prompt("How many questions?");
+    
+    // If user presses cancel, exit without doing anything
+    if (numQuestions === null) return;
+
+    numQuestions = parseInt(numQuestions);
+    if (!numQuestions || numQuestions < 1) return alert("Enter a valid number of questions.");
+
+    // Redirect to new page with query param
+    const url = new URL("<%= new_quiz_path %>", window.location.origin);
+    url.searchParams.set("number_of_questions", numQuestions);
+    window.location.href = url;
+  });
+});
+</script>
+
+
 
 <%= button_to(
         "Log Out",

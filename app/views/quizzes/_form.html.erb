@@ -1,4 +1,4 @@
-<%= form_with(model: quiz, data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.question-wrapper' }) do |f| %>
+<%= form_with(model: quiz) do |f| %>
   <% if quiz.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(quiz.errors.count, "error") %> prohibited this quiz from being saved:</h2>
@@ -9,36 +9,58 @@
       </ul>
     </div>
   <% end %>
-
+  
   <div>
     <%= f.label :public, "Make this quiz public?" %>
     <%= f.check_box :public %>
   </div>
 
   <div>
-    <%= f.label :title, style: "display: block" %>
+    <%= f.label :title %>
     <%= f.text_field :title %>
   </div>
 
   <div>
-    <%= f.label :description, style: "display: block" %>
+    <%= f.label :description %>
     <%= f.text_area :description %>
   </div>
 
-  <template data-nested-form-target="template">
-    <%= f.fields_for :questions, Question.new, child_index: 'NEW_RECORD' do |question_fields| %>
-      <%= render "question_fields", f: question_fields %>
-    <% end %>
-  </template>
+  <% quiz.questions.each_with_index do |question, q_index| %>
+    <fieldset>
+      <legend>
+        Question <%= q_index + 1 %> 
+        <%= f.fields_for :questions, question do |qf| %>
+        <% unless quiz.new_record? %>
+          <%= qf.check_box :_destroy %>
+          <%= qf.label :_destroy, "Remove Question" %>
+        <% end %>
+        <% end %>
+      </legend>
 
-  <div class="questions-wrapper" data-nested-form-target="target">
-    <%= f.fields_for :questions do |question_fields| %>
-      <%= render "question_fields", f: question_fields %>
-    <% end %>
-  </div>
+      <%= f.fields_for :questions, question do |qf| %>
+        <div>
+          <%= qf.label :name, "Question text" %>
+          <%= qf.text_field :name %>
+          <%= qf.label :points %>
+          <%= qf.number_field :points, min: 1 %>
+        </div>
 
-  <div data-nested-form-target="target"></div>
-  <button type="button" data-action="nested-form#add">Add Question</button>
+        <div>
+          <strong>Answers:</strong>
+          <% 4.times do |a_index| %>
+            <div>
+              <%= qf.fields_for :options, question.options[a_index] || Option.new do |of| %>
+                <%= of.text_field :name, placeholder: "Answer #{a_index + 1}" %>
+                <%= of.check_box :is_correct %>
+                <%= of.label :is_correct, "Correct" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </fieldset>
+  <% end %>
 
   <%= f.submit "Save Quiz" %>
 <% end %>
+

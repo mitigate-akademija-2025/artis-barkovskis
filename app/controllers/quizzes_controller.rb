@@ -37,7 +37,14 @@ class QuizzesController < ApplicationController
   # GET /quizzes/new
   def new
     @quiz = Quiz.new
+
+    num_questions = (params[:number_of_questions] || 0).to_i
+    num_questions.times do
+      question = @quiz.questions.build(points: 1)
+      4.times { question.options.build }
+    end
   end
+
 
   # GET /quizzes/1/edit
   def edit

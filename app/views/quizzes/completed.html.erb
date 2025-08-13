@@ -6,24 +6,26 @@
 
 <h3>Questions and Your Answers:</h3>
 <ul>
-	<% @quiz.questions.each do |question| %>
-		<li>
-			<strong><%= question.name %></strong><br>
-			Correct answer:
-			<% correct_option = question.options.find { |opt| opt.is_correct? } %>
-			<%= correct_option&.name || 'No correct answer set' %><br>
-			Your answer:
-			<% attempt_answer = @quiz_attempt.quiz_attempt_answers.find_by(question_id: question.id) %>
-			<% if attempt_answer %>
-				<% user_option = question.options.find { |opt| opt.id == attempt_answer.option_id } %>
-				<% if user_option && correct_option && user_option.id != correct_option.id %>
-					<span style="color: red;"><%= user_option.name %></span>
-				<% else %>
-					<%= user_option&.name || 'No answer' %>
-				<% end %>
-			<% else %>
-				No answer
-			<% end %>
-		</li>
-	<% end %>
+  <% @quiz.questions.each do |question| %>
+    <li>
+      <strong><%= question.name %></strong><br>
+
+      Correct answer:
+      <% correct_options = question.options.select(&:is_correct?) %>
+      <%= correct_options.map(&:name).join(', ') %><br>
+
+      Your answer:
+      <% attempt_answer = @quiz_attempt.quiz_attempt_answers.find_by(question_id: question.id) %>
+      <% if attempt_answer %>
+        <% user_option = question.options.find { |opt| opt.id == attempt_answer.option_id } %>
+        <% if user_option && !correct_options.include?(user_option) %>
+          <span style="color: red;"><%= user_option.name %></span>
+        <% else %>
+          <%= user_option&.name || 'No answer' %>
+        <% end %>
+      <% else %>
+        No answer
+      <% end %>
+    </li>
+  <% end %>
 </ul>

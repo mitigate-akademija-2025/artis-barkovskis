@@ -2,7 +2,6 @@
   <td><%= quiz.user.username %></td>
   <td><%= link_to quiz %></td>
   <div style ="display: flex; gap: 5px;">
-    <td><%= button_to 'Edit', edit_quiz_path(quiz), method: :get %></td>
     <td><%= button_to 'Delete', quiz, method: :delete %></td>
   </div>
 </tr>
