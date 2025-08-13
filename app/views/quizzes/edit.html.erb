@@ -1,5 +1,24 @@
 <% content_for :title, "Editing quiz" %>
 
+<style>
+  .header-style-link {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 12px;
+    transition: all 0.2s;
+    margin-right: 5px;
+  }
+
+  .header-style-link:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+</style>
+
 <h1>Editing quiz</h1>
 
 <%= render "form", quiz: @quiz %>
@@ -7,6 +26,7 @@
 <br>
 
 <div>
-  <%= link_to "Show this quiz", @quiz %> |
-  <%= link_to "Back to quizzes", quizzes_path %>
+  <%= link_to "Show this quiz", @quiz, class: "header-style-link" %>
+  <%= link_to "Back to quizzes", quizzes_path, class: "header-style-link" %>
 </div>
+

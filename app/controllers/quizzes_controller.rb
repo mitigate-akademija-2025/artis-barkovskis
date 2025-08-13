@@ -108,7 +108,7 @@ class QuizzesController < ApplicationController
     @quiz.destroy!
 
     respond_to do |format|
-      format.html { redirect_to quizzes_path, status: :see_other, notice: "Quiz was successfully destroyed." }
+      format.html { redirect_to quizzes_path, status: :see_other, notice: "Quiz was successfully deleted." }
       format.json { head :no_content }
     end
   end
@@ -140,7 +140,7 @@ class QuizzesController < ApplicationController
 
   def results
     @quiz = Quiz.find(params[:id])
-    @quiz_attempts = @quiz.quiz_attempts.all
+    @quiz_attempts = @quiz.quiz_attempts.order(score: :desc)
   end
   
   private

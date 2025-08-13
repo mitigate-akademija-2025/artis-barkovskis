@@ -1,8 +1,51 @@
-<tr id="<% dom_id quiz %>">
+<style>
+ <style>
+  /* Style Delete button */
+  .quiz-action-button {
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    height: 50px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .quiz-action-button:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+
+  /* Remove default form spacing for button_to */
+  td form {
+    margin: 0;
+  }
+
+  /* Quiz title styling */
+  .quiz-title-link {
+    color: black;
+    text-decoration: none;
+  }
+
+  .quiz-title-link:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<tr id="<%= dom_id(quiz) %>">
   <td><%= quiz.user.username %></td>
-  <td><%= link_to quiz %></td>
-  <div style ="display: flex; gap: 5px;">
-    <td><%= button_to 'Delete', quiz, method: :delete %></td>
-  </div>
+  <td><%= link_to quiz.title, quiz_path(quiz), class: "quiz-title-link" %></td>
+  <td>
+    <%= button_to 'Delete', quiz, method: :delete, form: { style: "display: inline;" }, class: "quiz-action-button" %>
+  </td>
 </tr>
+
+
+
+
 

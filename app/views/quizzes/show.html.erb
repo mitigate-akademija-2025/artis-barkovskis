@@ -1,14 +1,53 @@
+<style>
+  .header-btn {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: black;
+    margin-right: 5px;
+  }
+
+  .header-btn:hover {
+    background-color: #f0f0f0;
+  }
+
+  .delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .delete-btn:hover {
+    background-color: darkred;
+  }
+
+  .quiz-title {
+    font-size: 1.5em; /* bigger */
+    font-weight: bold; /* bold */
+    margin-bottom: 10px;
+  }
+</style>
+
 <% content_for :title, @quiz.title %>
+
+<div class="quiz-title"><%= @quiz.title %></div>
 
 <%= render @quiz %>
 
-<div>
-  <%= link_to "View results", quiz_results_path(@quiz) %> |
-  <%= link_to "Take this quiz", take_quiz_path(@quiz) %> |
-  <%= link_to "Edit this quiz", edit_quiz_path(@quiz) %> |
-  <%= link_to "Back to quizzes", quizzes_path %>
+<div class="quiz-actions">
+  <%= link_to "View results", quiz_results_path(@quiz), class: "header-btn" %>
+  <%= link_to "Take this quiz", take_quiz_path(@quiz), class: "header-btn" %>
+  <%= link_to "Edit this quiz", edit_quiz_path(@quiz), class: "header-btn" %>
+  <%= link_to "Back to quizzes", quizzes_path, class: "header-btn" %>
 
   <p>
-    <%= button_to "Delete this quiz!", @quiz, method: :delete %>
+    <%= button_to "Delete this quiz!", @quiz, method: :delete, class: "delete-btn" %>
   </p>
 </div>
+
+

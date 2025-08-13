@@ -1,21 +1,53 @@
 <% if @quiz_attempts.any? %>
-  <table id="quiz_attempts">
-    <thead>
-      <tr>
-        <th>User</th>
-        <th>Score</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
+  <style>
+    .result-button {
+      background-color: white;
+      color: black;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      height: 29px;
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .result-button:hover {
+      background-color: #f0f0f0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+  </style>
+
+  <div style="display: flex; gap: 20px; align-items: flex-start;">
+    <table id="quiz_attempts">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Score</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @quiz_attempts.each do |quiz_attempt| %>
+          <%= render "quiz_results", quiz_attempt: quiz_attempt %>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div id="results-buttons" style="display: flex; flex-direction: column; gap: 4px; margin-top: 36px;">
       <% @quiz_attempts.each do |quiz_attempt| %>
-        <%= render "quiz_results", quiz_attempt: quiz_attempt %>
-        <td>
-          <%= link_to 'View', quiz_completed_path(quiz_attempt.quiz, attempt_id: quiz_attempt.id), class: 'button' %>
-        </td>
+        <%= link_to 'View', quiz_completed_path(quiz_attempt.quiz, attempt_id: quiz_attempt.id), class: "result-button" %>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 <% else %>
   <p>No quiz attempts found for this quiz.</p>
 <% end %>
+
+
+
+
