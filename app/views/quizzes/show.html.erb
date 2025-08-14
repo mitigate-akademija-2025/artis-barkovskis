@@ -25,17 +25,11 @@
   .delete-btn:hover {
     background-color: darkred;
   }
-
-  .quiz-title {
-    font-size: 1.5em; /* bigger */
-    font-weight: bold; /* bold */
-    margin-bottom: 10px;
-  }
 </style>
 
 <% content_for :title, @quiz.title %>
 
-<div class="quiz-title"><%= @quiz.title %></div>
+<h1><%= @quiz.title %></h1>
 
 <%= render @quiz %>
 

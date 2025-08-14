@@ -105,6 +105,7 @@ class QuizzesController < ApplicationController
     @quiz = Quiz.find(params[:id])
     authorize @quiz
 
+    @quiz.quiz_attempts.destroy_all
     @quiz.destroy!
 
     respond_to do |format|
