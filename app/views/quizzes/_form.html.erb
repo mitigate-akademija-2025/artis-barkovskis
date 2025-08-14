@@ -61,6 +61,18 @@
     </fieldset>
   <% end %>
 
-  <%= f.submit "Save Quiz" %>
+  <%= f.submit "Save Quiz", class: "btn btn-primary" %>
 <% end %>
+
+<style>
+  .btn-primary{
+    color: black;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>
 
