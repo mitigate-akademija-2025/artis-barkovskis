@@ -4,9 +4,13 @@
     <%= link_to "All Quizzes", all_quizzes_path, class: "nav-btn" %>
   </nav>
 
-  <nav class="nav-right">
-    <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "logout-btn" %>
-  </nav>
+<nav class="nav-right">
+  <% if current_user&.admin? %>
+    <span style="color: red; font-weight: bold; margin-right: 10px;">Admin mode</span>
+  <% end %>
+  
+  <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "logout-btn", form: { style: "display: inline;" } %>
+</nav>
 </header>
 
 <style>
